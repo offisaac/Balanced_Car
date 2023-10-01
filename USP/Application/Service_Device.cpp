@@ -61,8 +61,8 @@ void tskDjiMotor(void *arg)
 //										yawmotor);		//	yaw轴电机
 
 		//	发送can队列，根据电机的发射帧id选择需要发送的数据包
-		xQueueSend(CAN2_TxPort,&Tx_Buff.Id200,0);
-		xQueueSend(CAN2_TxPort,&Tx_Buff.Id1ff,0);
+		
+
 	}
 }
 
