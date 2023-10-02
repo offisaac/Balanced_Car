@@ -35,19 +35,13 @@ void System_Device_Init(void)
 {
   /* Drivers Init */
 	// timer init
+
 	Timer_Init(&htim4, USE_MODULE_DELAY);
 	
 	////此设置语句使得delay_ms_nos()函数调用的是HAL_Delay(),容易造成FreeRTOS进程紊乱
   //Timer_Init(&htim4, USE_HAL_DELAY);
-	
-  // can init
-	CAN_Init(&hcan1, User_CAN1_RxCpltCallback);
-  CAN_Init(&hcan2, User_CAN2_RxCpltCallback);
-	
-	CAN_Filter_Mask_Config(&hcan1,CanFilter_1 | CanFifo_0 | Can_STDID | Can_DataType, 0x201, 0x300);
-	
-  CAN_Filter_Mask_Config(&hcan2,CanFilter_14 | CanFifo_0 | Can_STDID | Can_DataType, 0x201, 0x300);
-  
+	Left_Stop();
+  Right_Stop();
 	// uart init
   Uart_Init(&huart1, Uart1_Rx_Buff, USART1_RX_BUFFER_SIZE, RecHandle);
   Uart_Init(&huart2, Uart2_Rx_Buff, USART2_RX_BUFFER_SIZE, User_UART2_RxCpltCallback);
@@ -61,7 +55,9 @@ void System_Device_Init(void)
 	#endif
 	
   myPIDTimer::getMicroTick_regist (Get_SystemTimer);
+
   asuwave_init(&huart1, xTaskGetTickCount);
+
 
 }
 

@@ -18,15 +18,12 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "internal.h"
-#include "Drivers/Devices/Balanced_Car.h"
 /* Private define ------------------------------------------------------------*/
 TaskHandle_t DjiMotor_Handle;		
 TaskHandle_t IMU_Handle;		
-TaskHandle_t DR16_Handle;
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
-void tskDR16(void *arg);
 /* Function prototypes -------------------------------------------------------*/
 /**
 * @brief  Initialization of device management service
@@ -39,22 +36,20 @@ void Service_Devices_Init(void)
 	#if  USE_SRML_MPU6050
   xTaskCreate(tskIMU,				"App.IMU",	   Small_Stack_Size, NULL, PriorityNormal,      &IMU_Handle);
 	#endif
-  xTaskCreate(tskDR16, 			"App.DR16",    Small_Stack_Size, NULL, PriorityAboveNormal, &DR16_Handle);
 }
 
 
 
-/**
- * @brief <freertos> 大疆电机控制任务
- */
+
 void tskDjiMotor(void *arg)
 {
 	/*	pre load for task	*/
 	static Motor_CAN_COB Tx_Buff;
 	for(;;){
 		/* wait for next circle */
-		vTaskDelay(1);
-	
+		vTaskDelay(1);//实际上电机的时候一定注释这个
+	 
+
 
 	}
 }
@@ -77,44 +72,5 @@ void tskIMU(void *arg)
 }
 #endif
 
-/**
-	*	@brief	Dr16 data receive task
-	*/
-void tskDR16(void *arg)
-{
-  /* Cache for Task */
-  static USART_COB Rx_Package;
-  /* Pre-Load for task */
-  DR16.Check_Link(xTaskGetTickCount());
-  /* Infinite loop */
-  for (;;)
-  {
-    /* Enter critical */
-    xSemaphoreTake(DR16_mutex, portMAX_DELAY);
-    /*	等待数据	*/
-	if (xQueueReceive(DR16_QueueHandle, &Rx_Package, 100) == pdPASS)
-	{
-	  // Read Message
-	  DR16.DataCapture((DR16_DataPack_Typedef*) Rx_Package.address);
-	}
-	/*	检测遥控器连接 */
-    DR16.Check_Link(xTaskGetTickCount());
-    /*	判断是否连接 	 */
-    if(DR16.GetStatus() != DR16_ESTABLISHED )
-    {
-    	/**
-		 * lost the remote control
-		 */
-
-    	/* Leave critical */
-    	xSemaphoreGive(DR16_mutex);
-		continue;
-    }
-    /*	更新遥控器控制	*/
-
-    /* Leave critical */
-    xSemaphoreGive(DR16_mutex);
-  }
-}
 
 

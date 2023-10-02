@@ -8,7 +8,7 @@
   *    this file, which are used in deffrient tasks or services.
 **/
 #include "internal.h"
-#include "Drivers/Devices/Balanced_Car.h"
+
 /* RTOS Resources ------------------------------------------------------------*/
 /* Queues */
 QueueHandle_t USART_TxPort;					//	串口发送队列
@@ -42,7 +42,8 @@ mpu_rec_s mpu_receive; //mpu6050数据
 
 DR16_Classdef DR16;		//遥控器DR16类
 
-Wheel Right_Wheel;
+Wheel Left_Wheel(Left);
+Wheel Right_Wheel(Right);
 /************************ COPYRIGHT(C) SCUT-ROBOTLAB **************************/
 
 

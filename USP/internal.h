@@ -13,6 +13,7 @@
 #include "task.h"
 #include "queue.h"
 #include "semphr.h"
+#include "Drivers/Devices/Balanced_Car.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,6 +98,8 @@ extern DR16_Classdef DR16;		//Ò£¿ØÆ÷DR16Àà
 
 
 
+extern Wheel Right_Wheel;
+extern Wheel Left_Wheel;
 /* Exported function declarations --------------------------------------------*/
 void Service_Debug_Init(void);
 void Service_Communication_Init(void);

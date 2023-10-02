@@ -17,10 +17,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "internal.h"
 /* Private define ------------------------------------------------------------*/
-void Task_CAN1Transmit(void *arg);
-void Task_CAN2Transmit(void *arg);
-void Task_CAN1Receive(void *arg);
-void Task_CAN2Receive(void *arg);
 void Task_UsartTransmit(void *arg);
 void Task_UsartReceive(void *arg);
 /**
@@ -30,20 +26,14 @@ void Task_UsartReceive(void *arg);
 */
 void Service_Communication_Init(void)
 {
-    xTaskCreate(Task_CAN1Transmit, "Com.CAN1 TxPort"  , Tiny_Stack_Size,    NULL, PrioritySuperHigh,   &CAN1SendPort_Handle);
-    xTaskCreate(Task_CAN2Transmit, "Com.CAN2 TxPort"  , Tiny_Stack_Size,    NULL, PrioritySuperHigh,   &CAN2SendPort_Handle);
-    xTaskCreate(Task_CAN1Receive, "Com.CAN1 RxPort"  , Tiny_Stack_Size,    NULL, PrioritySuperHigh,   &CAN1ReceivePort_Handle);
-    xTaskCreate(Task_CAN2Receive, "Com.CAN2 RxPort"  , Tiny_Stack_Size,    NULL, PrioritySuperHigh,   &CAN2ReceivePort_Handle);
+   
     xTaskCreate(Task_UsartTransmit,"Com.Usart TxPort" , Tiny_Stack_Size,    NULL, PriorityHigh,   		&UartTransmitPort_Handle);
     xTaskCreate(Task_UsartReceive,"Com.Usart RxPort" , Tiny_Stack_Size,    NULL, PriorityHigh,   		&UartReceivePort_Handle);
 }
 
 /*----------------------------------------------- CAN Manager ---------------------------------------------*/
 /*Task Define ---------------------------*/
-TaskHandle_t CAN1SendPort_Handle;
-TaskHandle_t CAN2SendPort_Handle;
-TaskHandle_t CAN1ReceivePort_Handle;
-TaskHandle_t CAN2ReceivePort_Handle;
+
 
 /*Function Prototypes--------------------*/
 /**
@@ -51,105 +41,7 @@ TaskHandle_t CAN2ReceivePort_Handle;
 * @param  None.
 * @return None.
 */
-void Task_CAN1Transmit(void *arg)
-{
-  /* Cache for Task */
-  uint8_t free_can_mailbox;
-  static CAN_COB CAN_TxMsg;
-  /* Pre-Load for task */
-  
-  /* Infinite loop */
-  
-  for(;;)
-  {
-    /* CAN1 Send Port */
-    if(xQueueReceive(CAN1_TxPort,&CAN_TxMsg,portMAX_DELAY) == pdPASS)
-    {
-      do{
-        free_can_mailbox = HAL_CAN_GetTxMailboxesFreeLevel(&hcan1);
-      }while(free_can_mailbox == 0);
-      CANx_SendData(&hcan1,CAN_TxMsg.ID,CAN_TxMsg.Data,CAN_TxMsg.DLC);
-    }
-  }
-}
 
-/*
- * can2 transmit
- */
-void Task_CAN2Transmit(void *arg)
-{
-  /* Cache for Task */
-  uint8_t free_can_mailbox;
-  static CAN_COB CAN_TxMsg;
-  /* Pre-Load for task */
-
-  /* Infinite loop */
-
-  for (;;)
-  {
-    /* CAN1 Send Port */
-    if (xQueueReceive(CAN2_TxPort, &CAN_TxMsg, portMAX_DELAY) == pdPASS)
-    {
-      do
-      {
-        free_can_mailbox = HAL_CAN_GetTxMailboxesFreeLevel(&hcan2);
-      } while (free_can_mailbox == 0);
-      CANx_SendData(&hcan2, CAN_TxMsg.ID, CAN_TxMsg.Data, CAN_TxMsg.DLC);
-    }
-  }
-}
-
-/*
- * can1 receive
- */
-void Task_CAN1Receive(void *arg)
-{
-  static CAN_COB CAN_RxCOB;
-
-  /* Infinite loop */
-  for (;;)
-  {
-    /* update motor data from CAN1_RxPort */
-    if (xQueueReceive(CAN1_RxPort, &CAN_RxCOB, portMAX_DELAY) == pdPASS)
-    {
-    	//更新电机数据，如
-//    	if (robot.pitchmotor.CheckID(CAN_RxCOB.ID))
-//    	{
-//    		robot.pitchmotor.update(CAN_RxCOB.Data);
-//    	}
-//    	else if (robot.yawmotor.CheckID(CAN_RxCOB.ID))
-//    	{
-//    		robot.yawmotor.update(CAN_RxCOB.Data);
-//    	}
-    }
-  }
-}
-
-/*
- * can2 receive
- */
-void Task_CAN2Receive(void *arg)
-{
-  static CAN_COB CAN_RxCOB;
-
-  /* Infinite loop */
-  for (;;)
-  {
-    /* update motor data from CAN1_RxPort */
-    if (xQueueReceive(CAN2_RxPort, &CAN_RxCOB, portMAX_DELAY) == pdPASS)
-    {
-    	//更新电机数据，如
-//    	if (robot.pitchmotor.CheckID(CAN_RxCOB.ID))
-//    	{
-//    		robot.pitchmotor.update(CAN_RxCOB.Data);
-//    	}
-//    	else if (robot.yawmotor.CheckID(CAN_RxCOB.ID))
-//    	{
-//    		robot.yawmotor.update(CAN_RxCOB.Data);
-//    	}
-    }
-  }
-}
 
 /**
 * @brief  Callback function in CAN1 Interrupt
