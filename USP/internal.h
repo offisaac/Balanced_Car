@@ -95,7 +95,7 @@ extern mpu_rec_s mpu_receive; //mpu6050数据
 
 extern DR16_Classdef DR16;		//遥控器DR16类
 
-extern int Count1;
+extern int Count1;//两轮编码器信息
 extern int Count2;
 
 /* Exported function declarations --------------------------------------------*/

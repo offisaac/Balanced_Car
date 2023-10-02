@@ -895,6 +895,11 @@
               <FileType>8</FileType>
               <FilePath>..\SRML\Drivers\Devices\referee.cpp</FilePath>
             </File>
+            <File>
+              <FileName>Balanced Car.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\Balanced Car.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -53,17 +53,9 @@ void tskDjiMotor(void *arg)
 	for(;;){
 		/* wait for next circle */
 		vTaskDelay(1);
-		/*	电机控制	*/
-
-		/*	将电机输出数据打包成can消息队列	*/
-
-//		Tx_Buff =  MotorMsgPack(Tx_Buff,pitchmotor,		//	pitch轴电机
-//										yawmotor);		//	yaw轴电机
-
-		//	发送can队列，根据电机的发射帧id选择需要发送的数据包
-		HAL_GPIO_WritePin(GPIOC,GPIO_PIN_4,GPIO_PIN_SET);
-		vTaskDelay(200);
-    HAL_GPIO_WritePin(GPIOC,GPIO_PIN_4,GPIO_PIN_RESET);
+	
+	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_13,GPIO_PIN_SET);
+	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_1,GPIO_PIN_RESET);	
 	}
 }
 

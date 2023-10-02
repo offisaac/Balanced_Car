@@ -48,7 +48,7 @@
 #define USE_SRML_MOTOR_DJI                1
 #define USE_SRML_REFEREE                  1
 #define USE_SRML_VSEC                     0
-
+#define USE_SRML_BALANCED_CAR             1
 
 /* Middlewares -----------------------------------------------*/
 #define USE_SRML_FILTER                   1
@@ -121,6 +121,9 @@
 #endif
 #if USE_SRML_VSEC
   #include "Drivers/Devices/VSEC.h"
+#endif
+#if USE_SRML_BALANCED_CAR
+  #include "Drivers/Devices/Balanced_Car.h"
 #endif
 /* Devices header end */
 
