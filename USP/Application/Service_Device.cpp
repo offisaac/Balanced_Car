@@ -18,6 +18,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "internal.h"
+#include "Drivers/Devices/Balanced_Car.h"
 /* Private define ------------------------------------------------------------*/
 TaskHandle_t DjiMotor_Handle;		
 TaskHandle_t IMU_Handle;		
@@ -54,8 +55,7 @@ void tskDjiMotor(void *arg)
 		/* wait for next circle */
 		vTaskDelay(1);
 	
-	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_13,GPIO_PIN_SET);
-	HAL_GPIO_WritePin(GPIOB,GPIO_PIN_1,GPIO_PIN_RESET);	
+
 	}
 }
 

@@ -8,7 +8,7 @@
   *    this file, which are used in deffrient tasks or services.
 **/
 #include "internal.h"
-
+#include "Drivers/Devices/Balanced_Car.h"
 /* RTOS Resources ------------------------------------------------------------*/
 /* Queues */
 QueueHandle_t USART_TxPort;					//	串口发送队列
@@ -34,11 +34,15 @@ uint8_t Uart4_Rx_Buff[USART4_RX_BUFFER_SIZE]; /*!< Receive buffer for Uart4 */
 uint8_t Uart5_Rx_Buff[USART5_RX_BUFFER_SIZE]; /*!< Receive buffer for Uart5 */
 uint8_t Uart6_Rx_Buff[USART6_RX_BUFFER_SIZE];/*!< Receive buffer for Uart6 */
 
+
+
 #if USE_SRML_MPU6050
 mpu_rec_s mpu_receive; //mpu6050数据
 #endif
 
 DR16_Classdef DR16;		//遥控器DR16类
+
+Wheel Right_Wheel;
 /************************ COPYRIGHT(C) SCUT-ROBOTLAB **************************/
 
 
