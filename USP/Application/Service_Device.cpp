@@ -61,8 +61,9 @@ void tskDjiMotor(void *arg)
 //										yawmotor);		//	yaw轴电机
 
 		//	发送can队列，根据电机的发射帧id选择需要发送的数据包
-		HAL_GPIO_WritePin(GPIOC,GPIO_PIN_8,GPIO_PIN_SET);
-
+		HAL_GPIO_WritePin(GPIOC,GPIO_PIN_4,GPIO_PIN_SET);
+		vTaskDelay(200);
+    HAL_GPIO_WritePin(GPIOC,GPIO_PIN_4,GPIO_PIN_RESET);
 	}
 }
 

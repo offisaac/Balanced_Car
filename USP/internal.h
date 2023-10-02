@@ -94,6 +94,10 @@ extern mpu_rec_s mpu_receive; //mpu6050Êý¾Ý
 #endif
 
 extern DR16_Classdef DR16;		//Ò£¿ØÆ÷DR16Àà
+
+extern int Count1;
+extern int Count2;
+
 /* Exported function declarations --------------------------------------------*/
 void Service_Debug_Init(void);
 void Service_Communication_Init(void);
