@@ -14,6 +14,7 @@
 #include "queue.h"
 #include "semphr.h"
 #include "Drivers/Devices/Balanced_Car.h"
+#include <Middlewares/UpperMonitor/UpperMonitor.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -100,8 +101,10 @@ extern DR16_Classdef DR16;		//Ò£¿ØÆ÷DR16Àà
 
 
 
-extern Wheel Right_Wheel;
+extern Wheel Right_Wheel;//ÂÖ×ÓÀà
 extern Wheel Left_Wheel;
+
+extern myPIDTimer time_tick;
 /* Exported function declarations --------------------------------------------*/
 void Service_Debug_Init(void);
 void Service_Communication_Init(void);

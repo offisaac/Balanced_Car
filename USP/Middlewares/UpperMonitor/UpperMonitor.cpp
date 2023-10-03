@@ -45,7 +45,7 @@
 /***********************上位机调参使用***********************/
 
 /* Includes ------------------------------------------------------------------*/ 
-#include <Middlewares/UpperMonitor/UpperMonitor.h>
+#include "internal.h"
 /* Private define ------------------------------------------------------------*/
 
 /* Private variables ---------------------------------------------------------*/
@@ -91,12 +91,12 @@ void UpperMonitor_Sent_Choose(float * data)
     switch(USART0_Sent_Choose_Data[i])
     {
       /* 以下部分用于观察参数曲线 */
-//      case 0: data[i]= AlphaTest.steer_Set[0].str_angle;
-//          break;
-//      case 1: data[i]= AlphaTest.steer_Set[0].vect_angle;
-//          break;
-//      case 2: data[i]= AlphaTest.steer_Set[0].speed_direction;
-//          break;
+      case 0: data[i]= Right_Wheel.Velocity;
+          break;
+      case 1: data[i]= Left_Wheel.Velocity;
+          break;
+      case 2: data[i]= 100;
+          break;
       default:break;
 	  /* 以上部分用于观察参数曲线 */
     }

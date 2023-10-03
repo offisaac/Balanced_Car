@@ -1,6 +1,8 @@
 #include "internal.h"
 
-	 
+int anlge_p=0;
+
+
 	  
 	  
 void Wheel::Wheel_Type_Update()
@@ -17,8 +19,20 @@ this->GPIO_PIN=Right_GPIO_PIN;
 }
 }
 
+void Wheel::Wheel_Data_Update()
+{
+this->Velocity=Velocity_Cal();
+this->Angle=mpu_receive.pitch;
+}
 
-
+float Wheel::Velocity_Cal()
+{
+float out=0;
+Tick_Update(time_tick);//更新 获取时间 上一次的时间是上一次进行更新的时间点
+out=(this->Count-this->Lase_Count)/time_tick.dt;
+this->Lase_Count=this->Count;//更新 
+return out;
+}
 
 void Wheel::Motor_Control()//进行前后判断 进行id判断 最后运行
 {
@@ -28,12 +42,12 @@ this->State=Forward;
 if(this->Wheel_ID==Right)	
 {
 Right_Forward();
-__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_4,-(this->Out));
+__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_4,(this->Out));
 }
 if(this->Wheel_ID==Left)	
 {
 Left_Forward();
-__HAL_TIM_SetCompare(&htim2,TIM_CHANNEL_1,-(this->Out));
+__HAL_TIM_SetCompare(&htim2,TIM_CHANNEL_1,(this->Out));
 }
 }
 if(this->Out<0)
@@ -57,7 +71,10 @@ __HAL_TIM_SetCompare(&htim2,TIM_CHANNEL_1,-(this->Out));
 
 void Wheel::Adjust()
 {
-
+	this->PID_Angle.SetPIDParam(anlge_p,0,0,1000,1000);
+	this->PID_Angle.Current=this->Angle;
+	this->PID_Angle.Target=0;
+	this->Out= PID_Angle.Adjust();
 }
 
 

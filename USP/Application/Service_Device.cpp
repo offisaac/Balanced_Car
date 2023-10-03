@@ -21,9 +21,11 @@
 /* Private define ------------------------------------------------------------*/
 TaskHandle_t DjiMotor_Handle;		
 TaskHandle_t IMU_Handle;		
+TaskHandle_t Upper_Monitor_Handle;
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
+//void tskUpper_Monitor(void *arg);
 /* Function prototypes -------------------------------------------------------*/
 /**
 * @brief  Initialization of device management service
@@ -36,10 +38,16 @@ void Service_Devices_Init(void)
 	#if  USE_SRML_MPU6050
   xTaskCreate(tskIMU,				"App.IMU",	   Small_Stack_Size, NULL, PriorityNormal,      &IMU_Handle);
 	#endif
+//	xTaskCreate(tskUpper_Monitor,				"App.Upper_Monitor",	   Small_Stack_Size, NULL, PriorityNormal,      &Upper_Monitor_Handle);
 }
 
 
-
+//void tskUpper_Monitor(void *arg)
+//{
+//vTaskDelay(1);
+//Sent_Contorl(&huart1);
+////
+//}
 
 void tskDjiMotor(void *arg)
 {
@@ -48,11 +56,12 @@ void tskDjiMotor(void *arg)
 	for(;;){
 		/* wait for next circle */
 		vTaskDelay(1);//实际上电机的时候一定注释这个
-		Right_Wheel.PID_Velocity().SetPIDParam();//调试的时候写在外面
-		Right_Wheel.Out=0;
-		Left_Wheel.Out=0;
-Right_Wheel.Motor_Control();
-Left_Wheel.Motor_Control();
+		Right_Wheel.Wheel_Data_Update();
+		Left_Wheel.Wheel_Data_Update();//更新内部参数
+		Right_Wheel.Adjust();//pid计算并内部赋值
+    Left_Wheel.Adjust();
+    Right_Wheel.Motor_Control();
+    Left_Wheel.Motor_Control();
 	}
 }
 

@@ -42,8 +42,10 @@ mpu_rec_s mpu_receive; //mpu6050数据
 
 DR16_Classdef DR16;		//遥控器DR16类
 
-Wheel Left_Wheel(Left);
+Wheel Left_Wheel(Left);//轮子类
 Wheel Right_Wheel(Right);
+
+myPIDTimer time_tick;
 /************************ COPYRIGHT(C) SCUT-ROBOTLAB **************************/
 
 
