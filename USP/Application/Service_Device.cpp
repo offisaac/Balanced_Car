@@ -25,7 +25,7 @@ TaskHandle_t Upper_Monitor_Handle;
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
-//void tskUpper_Monitor(void *arg);
+void tskUpper_Monitor(void *arg);
 /* Function prototypes -------------------------------------------------------*/
 /**
 * @brief  Initialization of device management service
@@ -38,16 +38,17 @@ void Service_Devices_Init(void)
 	#if  USE_SRML_MPU6050
   xTaskCreate(tskIMU,				"App.IMU",	   Small_Stack_Size, NULL, PriorityNormal,      &IMU_Handle);
 	#endif
-//	xTaskCreate(tskUpper_Monitor,				"App.Upper_Monitor",	   Small_Stack_Size, NULL, PriorityNormal,      &Upper_Monitor_Handle);
+	xTaskCreate(tskUpper_Monitor,				"App.Upper_Monitor",	   Small_Stack_Size, NULL, PriorityNormal,      &Upper_Monitor_Handle);
 }
 
 
-//void tskUpper_Monitor(void *arg)
-//{
-//vTaskDelay(1);
-//Sent_Contorl(&huart1);
-////
-//}
+void tskUpper_Monitor(void *arg)
+{
+	for(;;){
+vTaskDelay(5);
+Sent_Contorl(&huart1);
+	}
+}
 
 void tskDjiMotor(void *arg)
 {
@@ -60,6 +61,8 @@ void tskDjiMotor(void *arg)
 		Left_Wheel.Wheel_Data_Update();//更新内部参数
 		Right_Wheel.Adjust();//pid计算并内部赋值
     Left_Wheel.Adjust();
+//		Right_Wheel.Out=-300;
+//		Left_Wheel.Out=-300;
     Right_Wheel.Motor_Control();
     Left_Wheel.Motor_Control();
 	}

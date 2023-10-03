@@ -4,7 +4,7 @@ int anlge_p=0;
 
 
 	  
-	  
+//更新类型  
 void Wheel::Wheel_Type_Update()
 {
 if(this->Wheel_ID==Left)//1是左轮 0是右轮
@@ -18,11 +18,12 @@ this->GPIO_Type=Right_GPIO_Type;
 this->GPIO_PIN=Right_GPIO_PIN;
 }
 }
-
+//更新速度(调用即计算)和角度 角速度(调用即读值)
 void Wheel::Wheel_Data_Update()
 {
 this->Velocity=Velocity_Cal();
 this->Angle=mpu_receive.pitch;
+this->Angular_Velocity=mpu_receive.gyro[0]+2;
 }
 
 float Wheel::Velocity_Cal()
