@@ -29,8 +29,7 @@ this->Angular_Velocity=mpu_receive.gyro[0]+2;//人为弥补偏差
 float Wheel::Velocity_Cal()
 {
 float out=0;
-Tick_Update(time_tick);//更新 获取时间 上一次的时间是上一次进行更新的时间点
-out=(this->Count-this->Lase_Count)/(time_tick.dt*1000);//减小速度值 否则太大
+out=(this->Count-this->Lase_Count);//减小速度值 否则太大
 this->Lase_Count=this->Count;//更新 
 return out;
 }
