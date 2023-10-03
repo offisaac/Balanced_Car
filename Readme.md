@@ -1,23 +1,19 @@
-# 1️⃣如何用Template配置一个属于自己的新项目？
-如果您认为重新创建工程过于麻烦，可以选择从原有的工程中做一些改变,变成您自己的空工程，如改成xxx工程。
-- 文件夹名的更改：
-  
-  - `Template` -> `xxx`
-  
-  - `Template.ioc` -> `xxx.ioc`
-  - `MDK-ARM\Template.uvprojx` -> `MDK-ARM\xxx.uvprojx`
-  - `MDK-ARM`文件夹中删除 **除** `xxx.uvprojx`和`startup_stm32f405xx.s`以外所有文件
-  - 用记事本打开`xxx.uvprojx`将所有的Template替换为xxx
-  
-- `Template.ioc`重新生成工程
+# 平衡车工程文件
 
-  
-  
-  
-  
+## 1.电机(正对烧录器)
 
-# 2️⃣clone已有的工程时拉取SRML的代码
+左轮
 
- -  ```bash
-    $ git submodule update --init --recursive
+信号线 PC1 
 
+PWM线 PC3
+
+正反转线 PC13
+
+右轮
+
+信号线 PA0
+
+PWM线 PC5
+
+正反转线 PB1 

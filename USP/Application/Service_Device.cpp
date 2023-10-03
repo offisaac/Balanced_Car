@@ -48,9 +48,11 @@ void tskDjiMotor(void *arg)
 	for(;;){
 		/* wait for next circle */
 		vTaskDelay(1);//实际上电机的时候一定注释这个
-	 
-
-
+		Right_Wheel.PID_Velocity().SetPIDParam();//调试的时候写在外面
+		Right_Wheel.Out=0;
+		Left_Wheel.Out=0;
+Right_Wheel.Motor_Control();
+Left_Wheel.Motor_Control();
 	}
 }
 

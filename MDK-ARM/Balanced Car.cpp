@@ -1,6 +1,9 @@
 #include "internal.h"
 
-void Wheel::Wheel_Update()
+	 
+	  
+	  
+void Wheel::Wheel_Type_Update()
 {
 if(this->Wheel_ID==Left)//1是左轮 0是右轮
 {
@@ -13,38 +16,52 @@ this->GPIO_Type=Right_GPIO_Type;
 this->GPIO_PIN=Right_GPIO_PIN;
 }
 }
+
+
+
+
 void Wheel::Motor_Control()//进行前后判断 进行id判断 最后运行
 {
 if(this->Out>=0)
 {
 this->State=Forward;
-if(Wheel_ID==Right)	
+if(this->Wheel_ID==Right)	
 {
-
+Right_Forward();
+__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_4,-(this->Out));
 }
-if(Wheel_ID==Left)	
+if(this->Wheel_ID==Left)	
 {
-
+Left_Forward();
+__HAL_TIM_SetCompare(&htim2,TIM_CHANNEL_1,-(this->Out));
 }
 }
 if(this->Out<0)
 {
 this->State=Backward;
-if(Wheel_ID==Right)	
+if(this->Wheel_ID==Right)	
 {
-
+Right_Backward();
+__HAL_TIM_SetCompare(&htim3,TIM_CHANNEL_4,-(this->Out));
 }
-if(Wheel_ID==Left)	
+if(this->Wheel_ID==Left)	
 {
+Left_Backward();
+__HAL_TIM_SetCompare(&htim2,TIM_CHANNEL_1,-(this->Out));
+}
+}
+}
 
-}
-}
-}
+
+
 
 void Wheel::Adjust()
 {
 
 }
+
+
+
 
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_PIN)
