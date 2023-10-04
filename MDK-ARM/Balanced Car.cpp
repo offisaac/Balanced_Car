@@ -87,10 +87,13 @@ void Wheel::Adjust()
 //	this->PID_Angle.Current=this->Angle;//这里逻辑是正确的 往前角度角速度都是负值 所以输出值为正 向前 极性巧了为正 要不然这里输出要反过来
 //	this->PID_Angle.Target=this->PID_Velocity.Target=0;;
 //	this->Out= (PID_Angle.Adjust()-this->Angular_Velocity*angle_d);//人为使用角速度作为d项 并且角速度为负输出应为正(向前倒 角度减 角速度应该为负)
-this->PID_Velocity.SetPIDParam(velocity_p,velocity_i,0,200,1000);
+if(this->Last_Velocity!=this->Velocity)
+{this->PID_Velocity.integral_e=0;}	
+this->PID_Velocity.SetPIDParam(velocity_p,velocity_i,0,100,1000);
 this->PID_Velocity.Current=this->Velocity;
 this->PID_Velocity.Target=velocity;
 this->Out= PID_Velocity.Adjust();
+this->Last_Velocity=this->Velocity;
 }
 
 
@@ -104,24 +107,20 @@ if(GPIO_PIN==GPIO_PIN_0)
 	if(Right_Wheel.State==Forward)
 {	
 Right_Wheel.Count++;
-	Left_Wheel.Count++;
 }
 	if(Right_Wheel.State==Backward)
 {	
 Right_Wheel.Count--;
-	Left_Wheel.Count--;
 }
 }
 if(GPIO_PIN==GPIO_PIN_1)
 {
 	if(Left_Wheel.State==Forward)
 {
-Right_Wheel.Count++;
 	Left_Wheel.Count++;
 }
 	if(Left_Wheel.State==Backward)
 {
-Right_Wheel.Count--;
 	Left_Wheel.Count--;
 }
 }

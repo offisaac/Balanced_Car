@@ -71,7 +71,7 @@ void tskDjiMotor(void *arg)
 	static Motor_CAN_COB Tx_Buff;
 	for(;;){
 		/* wait for next circle */
-		vTaskDelay(1);//实际上电机的时候一定注释这个
+		vTaskDelay(5);//实际上电机的时候一定注释这个
     Right_Wheel.Motor_Control();
     Left_Wheel.Motor_Control();
 	}
