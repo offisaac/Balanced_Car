@@ -95,7 +95,11 @@ void UpperMonitor_Sent_Choose(float * data)
           break;
       case 1: data[i]= Left_Wheel.Velocity;
           break;
-      case 2: data[i]= 100;
+      case 2: data[i]= time_tick.dt;
+          break;
+			case 3: data[i]= Left_Wheel.Count;
+          break;
+      case 4: data[i]= Right_Wheel.Count;
           break;
       default:break;
 	  /* 以上部分用于观察参数曲线 */

@@ -22,10 +22,12 @@
 TaskHandle_t DjiMotor_Handle;		
 TaskHandle_t IMU_Handle;		
 TaskHandle_t Upper_Monitor_Handle;
+TaskHandle_t Wheel_Update_Handle;	
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
 void tskUpper_Monitor(void *arg);
+void tskWheel_Update(void *arg);
 /* Function prototypes -------------------------------------------------------*/
 /**
 * @brief  Initialization of device management service
@@ -39,13 +41,26 @@ void Service_Devices_Init(void)
   xTaskCreate(tskIMU,				"App.IMU",	   Small_Stack_Size, NULL, PriorityNormal,      &IMU_Handle);
 	#endif
 	xTaskCreate(tskUpper_Monitor,				"App.Upper_Monitor",	   Small_Stack_Size, NULL, PriorityNormal,      &Upper_Monitor_Handle);
+	xTaskCreate(tskWheel_Update,				"App.Wheel_Update",	   Small_Stack_Size, NULL, PriorityNormal,      &Wheel_Update_Handle);
 }
 
+void tskWheel_Update(void *arg)
+{
+	for(;;){
+		vTaskDelay(20);
+	  Right_Wheel.Wheel_Data_Update();
+		Left_Wheel.Wheel_Data_Update();//更新内部参数
+		Right_Wheel.Adjust();//pid计算并内部赋值
+    Left_Wheel.Adjust();
+	}
+}
 
 void tskUpper_Monitor(void *arg)
 {
+	TickType_t xLastWakeTime_t;
+	  xLastWakeTime_t = xTaskGetTickCount();
 	for(;;){
-vTaskDelay(5);
+vTaskDelayUntil(&xLastWakeTime_t, 5);
 Sent_Contorl(&huart1);
 	}
 }
@@ -57,12 +72,6 @@ void tskDjiMotor(void *arg)
 	for(;;){
 		/* wait for next circle */
 		vTaskDelay(1);//实际上电机的时候一定注释这个
-		Right_Wheel.Wheel_Data_Update();
-		Left_Wheel.Wheel_Data_Update();//更新内部参数
-		Right_Wheel.Adjust();//pid计算并内部赋值
-    Left_Wheel.Adjust();
-//		Right_Wheel.Out=-300;
-//		Left_Wheel.Out=-300;
     Right_Wheel.Motor_Control();
     Left_Wheel.Motor_Control();
 	}
