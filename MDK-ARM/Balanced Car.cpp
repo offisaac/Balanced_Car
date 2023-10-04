@@ -9,9 +9,9 @@
 
 float angle_p=50;
 float angle_i=0;
-float angle_d=0.7;
-float velocity_p=0.5;
-float velocity_i=0;
+float angle_d=2;
+float velocity_p=00;
+float velocity_i=0.05;
 float velocity_d=0;
 int velocity=0;
 //更新类型  
@@ -39,7 +39,7 @@ this->Angular_Velocity=mpu_receive.gyro[0]+2;//人为弥补偏差
 int Wheel::Velocity_Cal()
 {
 float out=0;
-out=(this->Count-this->Lase_Count);//减小速度值 否则太大
+out=-(this->Count-this->Lase_Count);//减小速度值 否则太大
 this->Lase_Count=this->Count;//更新 
 return out;
 }
@@ -81,19 +81,16 @@ __HAL_TIM_SetCompare(&htim2,TIM_CHANNEL_1,-(this->Out));
 
 void Wheel::Adjust()
 {
-//	this->PID_Velocity.SetPIDParam(velocity_p,velocity_i,0,1000,1000);
-//	this->PID_Angle.Current=this->Velocity;//这里逻辑是正确的 往前角度角速度都是负值 所以输出值为正 向前 极性巧了为正 要不然这里输出要反过来
-//	this->PID_Angle.SetPIDParam(angle_p,angle_i,0,1000,1000);
-//	this->PID_Angle.Current=this->Angle;//这里逻辑是正确的 往前角度角速度都是负值 所以输出值为正 向前 极性巧了为正 要不然这里输出要反过来
-//	this->PID_Angle.Target=this->PID_Velocity.Target=0;;
-//	this->Out= (PID_Angle.Adjust()-this->Angular_Velocity*angle_d);//人为使用角速度作为d项 并且角速度为负输出应为正(向前倒 角度减 角速度应该为负)
-if(this->Last_Velocity!=this->Velocity)
-{this->PID_Velocity.integral_e=0;}	
-this->PID_Velocity.SetPIDParam(velocity_p,velocity_i,0,100,1000);
+//if(this->Last_Velocity!=this->Velocity)
+//{this->PID_Velocity.integral_e=0;}	单速度环调节时使用
+this->PID_Velocity.SetPIDParam(velocity_p,velocity_i,0,5,1000);
 this->PID_Velocity.Current=this->Velocity;
 this->PID_Velocity.Target=velocity;
-this->Out= PID_Velocity.Adjust();
 this->Last_Velocity=this->Velocity;
+this->PID_Angle.SetPIDParam(angle_p,angle_i,0,1000,1000);
+this->PID_Angle.Current=this->Angle;//这里逻辑是正确的 往前角度角速度都是负值 所以输出值为正 向前 极性巧了为正 要不然这里输出要反过来
+this->PID_Angle.Target=this->PID_Velocity.Adjust();
+this->Out= (PID_Angle.Adjust()-this->Angular_Velocity*angle_d);//人为使用角速度作为d项 并且角速度为负输出应为正(向前倒 角度减 角速度应该为负)
 }
 
 
