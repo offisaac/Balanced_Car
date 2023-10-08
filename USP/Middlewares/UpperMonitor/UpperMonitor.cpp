@@ -91,15 +91,19 @@ void UpperMonitor_Sent_Choose(float * data)
     switch(USART0_Sent_Choose_Data[i])
     {
       /* 以下部分用于观察参数曲线 */
-      case 0: data[i]= 100;
+      case 0: data[i]= Right_Wheel.Out;
           break;
-      case 1: data[i]= Left_Wheel.Velocity;
+      case 1: data[i]= Left_Wheel.Out;
           break;
-      case 2: data[i]= time_tick.dt;
+      case 2: data[i]= Right_Wheel.Velocity;
           break;
-			case 3: data[i]= Left_Wheel.Count;
+			case 3: data[i]= Left_Wheel.Velocity;
           break;
-      case 4: data[i]= Right_Wheel.Count;
+      case 4: data[i]= Right_Wheel.Angle;
+          break;
+			case 5: data[i]= Left_Wheel.Angle;
+          break;
+      case 6: data[i]= Right_Wheel.Angular_Velocity;
           break;
       default:break;
 	  /* 以上部分用于观察参数曲线 */
