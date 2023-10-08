@@ -105,6 +105,8 @@ void UpperMonitor_Sent_Choose(float * data)
           break;
       case 6: data[i]= Right_Wheel.Angular_Velocity;
           break;
+			case 7: data[i]= mpu_receive.gyro[2];
+          break;
       default:break;
 	  /* 以上部分用于观察参数曲线 */
     }

@@ -24,6 +24,7 @@ TaskHandle_t IMU_Handle;
 TaskHandle_t Upper_Monitor_Handle;
 TaskHandle_t Wheel_Update_Handle;	
 TaskHandle_t Wheel_Velocity_Update;	
+float kd=0;
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
@@ -60,6 +61,8 @@ void tskWheel_Update(void *arg)
 {
 	for(;;){
 		vTaskDelay(1);
+		Right_Wheel.turn_kd=kd;
+		Left_Wheel.turn_kd=kd;
 	  Right_Wheel.Wheel_Data_Update();
 		Left_Wheel.Wheel_Data_Update();//更新内部参数
 		Right_Wheel.Adjust();//pid计算并内部赋值
