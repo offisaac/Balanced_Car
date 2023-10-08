@@ -26,10 +26,14 @@ this->GPIO_PIN=Right_GPIO_PIN;
 }
 }
 //更新速度(调用即计算)和角度 角速度(调用即读值)
-void Wheel::Wheel_Data_Update()
+
+void Wheel::Wheel_Velocity_Update()
 {
 this->Velocity=Velocity_Cal();
-this->Lase_Count=this->Count;//计算完速度就更新
+this->Lase_Count=this->Count;//与数据更新分开是因为两者需要的频率不一样 速度的频率太高会导致分辨率很低很低
+}
+void Wheel::Wheel_Data_Update()
+{
 this->Angle=mpu_receive.pitch;
 this->Angular_Velocity=mpu_receive.gyro[0]+2;//人为弥补偏差
 }

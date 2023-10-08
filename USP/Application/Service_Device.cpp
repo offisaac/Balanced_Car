@@ -23,12 +23,13 @@ TaskHandle_t DjiMotor_Handle;
 TaskHandle_t IMU_Handle;		
 TaskHandle_t Upper_Monitor_Handle;
 TaskHandle_t Wheel_Update_Handle;	
-
+TaskHandle_t Wheel_Velocity_Update;	
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
 void tskUpper_Monitor(void *arg);
 void tskWheel_Update(void *arg);
+void tskWheel_Velocity_Update(void *arg);
 /* Function prototypes -------------------------------------------------------*/
 /**
 * @brief  Initialization of device management service
@@ -43,6 +44,16 @@ void Service_Devices_Init(void)
 	#endif
 	xTaskCreate(tskUpper_Monitor,				"App.Upper_Monitor",	   Small_Stack_Size, NULL, PriorityNormal,      &Upper_Monitor_Handle);
 	xTaskCreate(tskWheel_Update,				"App.Wheel_Update",	   Small_Stack_Size, NULL, PriorityNormal,      &Wheel_Update_Handle);
+	xTaskCreate(tskWheel_Velocity_Update,				"App.Wheel_Velocity_Update",	   Small_Stack_Size, NULL, PriorityNormal,      &Wheel_Velocity_Update);
+}
+
+void tskWheel_Velocity_Update(void *arg)
+{
+	for(;;){
+		vTaskDelay(15);
+	  Right_Wheel.Wheel_Velocity_Update();
+		Left_Wheel.Wheel_Velocity_Update();//更新内部参数
+	}
 }
 
 void tskWheel_Update(void *arg)
