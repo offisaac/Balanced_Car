@@ -23,6 +23,7 @@ TaskHandle_t DjiMotor_Handle;
 TaskHandle_t IMU_Handle;		
 TaskHandle_t Upper_Monitor_Handle;
 TaskHandle_t Wheel_Update_Handle;	
+int count=0;
 /* Private function declarations ---------------------------------------------*/
 void tskDjiMotor(void *arg);
 void tskIMU(void *arg);
@@ -48,10 +49,10 @@ void tskWheel_Update(void *arg)
 {
 	for(;;){
 		vTaskDelay(1);
-	  Right_Wheel.Wheel_Data_Update();
-		Left_Wheel.Wheel_Data_Update();//更新内部参数
-		Right_Wheel.Adjust();//pid计算并内部赋值
-    Left_Wheel.Adjust();
+//	  Right_Wheel.Wheel_Data_Update();
+//		Left_Wheel.Wheel_Data_Update();//更新内部参数
+//		Right_Wheel.Adjust();//pid计算并内部赋值
+//    Left_Wheel.Adjust();
 	}
 }
 
@@ -72,6 +73,21 @@ void tskDjiMotor(void *arg)
 	for(;;){
 		/* wait for next circle */
 		vTaskDelay(1);//实际上电机的时候一定注释这个
+		count++;
+		if(count<=200)
+		{
+		Right_Wheel.Out=300;
+		Left_Wheel.Out=300;
+		}
+	  else if(count<=400)
+		{
+		Right_Wheel.Out=-300;
+		Left_Wheel.Out=-300;
+		}
+		else
+		{
+			count=0;
+		}
     Right_Wheel.Motor_Control();
     Left_Wheel.Motor_Control();
 	}
