@@ -47,7 +47,7 @@ void Service_Devices_Init(void)
 void tskWheel_Update(void *arg)
 {
 	for(;;){
-		vTaskDelay(20);
+		vTaskDelay(1);
 	  Right_Wheel.Wheel_Data_Update();
 		Left_Wheel.Wheel_Data_Update();//更新内部参数
 		Right_Wheel.Adjust();//pid计算并内部赋值
@@ -71,7 +71,7 @@ void tskDjiMotor(void *arg)
 	static Motor_CAN_COB Tx_Buff;
 	for(;;){
 		/* wait for next circle */
-		vTaskDelay(5);//实际上电机的时候一定注释这个
+		vTaskDelay(1);//实际上电机的时候一定注释这个
     Right_Wheel.Motor_Control();
     Left_Wheel.Motor_Control();
 	}

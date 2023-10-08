@@ -91,7 +91,7 @@ void UpperMonitor_Sent_Choose(float * data)
     switch(USART0_Sent_Choose_Data[i])
     {
       /* 以下部分用于观察参数曲线 */
-      case 0: data[i]= Right_Wheel.Velocity;
+      case 0: data[i]= 100;
           break;
       case 1: data[i]= Left_Wheel.Velocity;
           break;
